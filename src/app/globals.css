@@ -1,26 +1,280 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --bg-warm: #faf6ef;
+  --bg-grey: #f4f4f4;
+  --bg-cold: #e8e9ef;
+  --peach: #ffbc95;
+  --coral: #f99e76;
+  --blue: #2e54fe;
+  --grey: #96908c;
+  --grey-deep: #6e6864;
+  --ink: #313131;
+  --espresso: #1c1410;
+  --espresso-deep: #0e0805;
+
+  --background: var(--bg-warm);
+  --foreground: var(--ink);
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-bg-warm: var(--bg-warm);
+  --color-bg-grey: var(--bg-grey);
+  --color-bg-cold: var(--bg-cold);
+  --color-peach: var(--peach);
+  --color-coral: var(--coral);
+  --color-blue: var(--blue);
+  --color-grey: var(--grey);
+  --color-grey-deep: var(--grey-deep);
+  --color-ink: var(--ink);
+  --color-espresso: var(--espresso);
+  --color-espresso-deep: var(--espresso-deep);
+
+  --color-cream: var(--bg-warm);
+  --color-cream-deep: var(--bg-grey);
+  --color-ink-soft: var(--grey);
+  --color-electric: var(--blue);
+
+  --font-display: "Cabinet Grotesk", ui-sans-serif, system-ui, sans-serif;
+  --font-sans: "General Sans", ui-sans-serif, system-ui, sans-serif;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+* {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
+html,
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-sans);
+  overscroll-behavior: none;
+}
+
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+
+.lenis.lenis-stopped {
+  overflow: clip;
+}
+
+.font-display {
+  font-family: var(--font-display);
+  font-feature-settings: "ss01";
+  letter-spacing: -0.02em;
+}
+
+.tag-text,
+.eyebrow {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 1rem;
+  color: var(--grey);
+  letter-spacing: 0;
+  text-transform: none;
+  line-height: 1.2;
+}
+
+.eyebrow-uc {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 0.78rem;
+  color: var(--grey);
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  line-height: 1.2;
+}
+
+.peach-pill {
+  position: relative;
+  display: inline-block;
+  isolation: isolate;
+}
+
+.peach-pill::before {
+  content: "";
+  position: absolute;
+  inset: 0.05em -0.35em;
+  background: var(--peach);
+  border-radius: 9999px;
+  z-index: -1;
+  transform: scaleX(var(--pill-scale, 0));
+  transform-origin: left center;
+  transition: transform 0.8s cubic-bezier(0.65, 0, 0.35, 1);
+}
+
+.peach-pill[data-visible="true"]::before {
+  transform: scaleX(1);
+}
+
+::selection {
+  background: var(--peach);
+  color: var(--ink);
+}
+
+@keyframes scrollCue {
+  0% { transform: translateY(-100%); }
+  60% { transform: translateY(120%); }
+  100% { transform: translateY(120%); }
+}
+
+.scroll-cue-dot {
+  animation: scrollCue 1.6s cubic-bezier(0.65, 0, 0.35, 1) infinite;
+}
+
+.hero-underline {
+  transform: scaleX(0);
+  transition: transform 0.95s cubic-bezier(0.65, 0, 0.35, 1);
+}
+
+[data-visible="true"] > .hero-underline {
+  transform: scaleX(1);
+}
+
+/* Inline-block word spans drop trailing whitespace at end-of-line per CSS Text Module,
+   so a space inside the span doesn't render between adjacent inline-blocks.
+   padding-right enforces visual spacing between staggered word spans. */
+[data-word] {
+  padding-right: 0.28em;
+}
+
+.wordmark-peach {
+  color: var(--peach);
+  font-family: var(--font-display);
+  font-weight: 600;
+  line-height: 0.75;
+  letter-spacing: -0.04em;
+}
+
+.section-title-grey {
+  color: var(--grey);
+  font-family: var(--font-display);
+  font-weight: 600;
+  line-height: 1.05;
+  letter-spacing: -0.025em;
+}
+
+.statement-peach {
+  color: var(--peach);
+  font-family: var(--font-display);
+  font-weight: 600;
+  line-height: 1.05;
+  letter-spacing: -0.025em;
+}
+
+.copy-toast {
+  position: absolute;
+  left: 50%;
+  bottom: calc(100% + 8px);
+  transform: translate(-50%, 4px);
+  opacity: 0;
+  pointer-events: none;
+  padding: 4px 10px;
+  border-radius: 9999px;
+  background: var(--ink);
+  color: var(--bg-warm);
+  font-family: var(--font-sans);
+  font-weight: 500;
+  font-size: 0.68rem;
+  letter-spacing: 0.06em;
+  white-space: nowrap;
+  transition: opacity 0.22s ease, transform 0.22s ease;
+}
+
+.copy-toast[data-show="true"] {
+  opacity: 1;
+  transform: translate(-50%, 0);
+}
+
+.cta-button {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  background: var(--peach);
+  color: var(--ink);
+  border-top: 1px solid var(--grey);
+  padding: 4vw 5vw;
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: clamp(2rem, 6vw, 6rem);
+  line-height: 1;
+  letter-spacing: -0.025em;
+  transition: background 0.6s ease, color 0.6s ease;
+  cursor: pointer;
+}
+
+.cta-button:hover {
+  background: transparent;
+  color: var(--grey);
+}
+
+.cta-arrow {
+  width: clamp(2rem, 5vw, 5rem);
+  height: clamp(2rem, 5vw, 5rem);
+  flex-shrink: 0;
+  border: 1.5px solid currentColor;
+  border-radius: 9999px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.tile-arrow {
+  transition: transform 0.55s cubic-bezier(.275, 2.254, .281, .996),
+    background-color 0.4s cubic-bezier(.165, .84, .44, 1),
+    color 0.4s cubic-bezier(.165, .84, .44, 1);
+}
+
+[data-tile]:hover .tile-arrow {
+  transform: rotate(45deg);
+  background-color: var(--ink);
+  color: var(--bg-warm);
+}
+
+[data-tile] {
+  /* tile transform owned by GSAP for entrance + parallax; hover effects are on inner elements */
+}
+
+.stack-chip {
+  transition: transform 0.5s cubic-bezier(.275, 2.254, .281, .996),
+    background-color 0.4s cubic-bezier(.165, .84, .44, 1),
+    border-color 0.4s cubic-bezier(.165, .84, .44, 1),
+    color 0.4s cubic-bezier(.165, .84, .44, 1);
+}
+
+.stack-chip:hover {
+  transform: translateY(-2px);
+  background-color: var(--peach);
+  border-color: var(--coral);
+  color: var(--ink);
+}
+
+.cta-button:hover .cta-arrow {
+  transform: rotate(45deg) translate(0, 0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
 }
