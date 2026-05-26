@@ -3,7 +3,7 @@
 import { useEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import type { WorkItem } from "@/config/work";
+import type { WorkItem, ServiceLayout } from "@/config/work";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -14,6 +14,7 @@ type Props = {
   line: string;
   includes: readonly string[];
   items: WorkItem[];
+  layout?: ServiceLayout;
 };
 
 export default function ServiceSection({
@@ -23,6 +24,7 @@ export default function ServiceSection({
   line,
   includes,
   items,
+  layout = "portrait-row",
 }: Props) {
   const sectionRef = useRef<HTMLElement>(null);
 
@@ -36,26 +38,24 @@ export default function ServiceSection({
     const ctx = gsap.context(() => {
       const titleWordEls = section.querySelectorAll("[data-word]");
       const meta = section.querySelectorAll("[data-meta]");
-      const tiles = section.querySelectorAll("[data-tile]");
-      const tileImgs = section.querySelectorAll("[data-tile-img]");
+      const tiles = Array.from(
+        section.querySelectorAll("[data-tile]")
+      ) as HTMLElement[];
 
       if (prefersReduced) {
         gsap.set(
           [
             ...Array.from(titleWordEls),
             ...Array.from(meta),
-            ...Array.from(tiles),
-            ...Array.from(tileImgs),
+            ...tiles,
           ].filter(Boolean) as Element[],
-          { opacity: 1, y: 0, yPercent: 0, scale: 1 }
+          { opacity: 1, y: 0, yPercent: 0, scale: 1, rotateX: 0 }
         );
         return;
       }
 
       gsap.set(titleWordEls, { opacity: 0, y: 24 });
       gsap.set(meta, { opacity: 0, y: 12 });
-      gsap.set(tiles, { opacity: 0, y: 36 });
-      gsap.set(tileImgs, { scale: 1.16, yPercent: -5 });
 
       const tl = gsap.timeline({
         scrollTrigger: {
@@ -84,54 +84,68 @@ export default function ServiceSection({
         "-=0.3"
       );
 
-      tiles.forEach((tile, i) => {
-        const img = tile.querySelector("[data-tile-img]");
-        const tileTl = gsap.timeline({
-          scrollTrigger: {
-            trigger: tile,
-            start: "top 90%",
-            once: true,
-          },
-          delay: i * 0.07,
+      if (layout === "portrait-row" && tiles.length) {
+        // "Flat to standing" entrance: cards lie back (rotateX), hinged at
+        // their bottom edge, and rise up to face the camera. The section is
+        // pinned to the viewport so the row stays frozen in place while the
+        // wave plays out across the 5 tiles.
+        gsap.set(tiles, {
+          rotateX: 70,
+          yPercent: 18,
+          opacity: 0,
+          transformOrigin: "50% 100%",
+          transformPerspective: 1400,
         });
-        tileTl.to(tile, {
-          opacity: 1,
-          y: 0,
-          duration: 1,
-          ease: "expo.out",
-        });
-        if (img) {
-          tileTl.to(
-            img,
-            {
-              scale: 1,
-              yPercent: 0,
-              duration: 1.4,
-              ease: "expo.out",
-            },
-            "<"
-          );
-        }
-      });
 
-      // parallax-within-mask: image drifts up as tile scrolls past
-      tileImgs.forEach((img) => {
-        const tile = (img as HTMLElement).closest("[data-tile]");
-        if (!tile) return;
-        gsap.to(img, {
-          yPercent: 8,
-          ease: "none",
+        const standUp = gsap.timeline({
           scrollTrigger: {
-            trigger: tile,
-            start: "top bottom",
-            end: "bottom top",
-            scrub: true,
+            trigger: section,
+            start: "top top",
+            end: "+=600",
+            pin: true,
+            pinSpacing: true,
+            scrub: 0.9,
+            anticipatePin: 1,
+            invalidateOnRefresh: true,
           },
         });
-      });
+
+        tiles.forEach((tile) => {
+          standUp.to(
+            tile,
+            {
+              rotateX: 0,
+              yPercent: 0,
+              opacity: 1,
+              duration: 1,
+              ease: "power3.out",
+            },
+            0
+          );
+        });
+      } else {
+        // Default tile entrance: slide-up + fade (one-shot per tile)
+        gsap.set(tiles, { opacity: 0, y: 36 });
+        tiles.forEach((tile, i) => {
+          gsap.to(tile, {
+            opacity: 1,
+            y: 0,
+            duration: 1,
+            ease: "expo.out",
+            delay: i * 0.07,
+            scrollTrigger: {
+              trigger: tile,
+              start: "top 90%",
+              once: true,
+            },
+          });
+        });
+      }
     }, sectionRef);
 
     return () => ctx.revert();
+    // layout is a static prop set once per section; intentionally not in deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const titleWords = title.split(" ").filter(Boolean);
@@ -146,6 +160,14 @@ export default function ServiceSection({
         paddingBottom: "5vw",
         paddingLeft: "4vw",
         paddingRight: "4vw",
+        ...(layout === "portrait-row"
+          ? {
+              minHeight: "100svh",
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "center",
+            }
+          : null),
       }}
     >
       <div className="flex items-start justify-between mb-[2.5vw]">
@@ -226,6 +248,41 @@ export default function ServiceSection({
         </ul>
       </div>
 
+      {layout === "bento" ? (
+        <BentoGrid items={items} />
+      ) : layout === "landscape-row" ? (
+        <LandscapeRow items={items} />
+      ) : (
+        <PortraitRow items={items} />
+      )}
+    </section>
+  );
+}
+
+function PortraitRow({ items }: { items: WorkItem[] }) {
+  return (
+    <div
+      className="relative w-full"
+      style={{
+        padding: "1.4vw 1.4vw 1.1vw",
+        borderRadius: "18px",
+        background:
+          "linear-gradient(180deg, rgba(255,255,255,0.55) 0%, rgba(255,188,149,0.05) 100%)",
+        border: "1px solid rgba(150,144,140,0.18)",
+        boxShadow:
+          "inset 0 1px 0 rgba(255,255,255,0.65), 0 22px 60px -40px rgba(50,36,28,0.28)",
+      }}
+    >
+      <div
+        aria-hidden
+        className="flex items-center justify-between mb-[0.9vw] px-[0.2vw]"
+        style={{ color: "var(--grey)" }}
+      >
+        <span className="tag-text">Selected — Brand & Identity</span>
+        <span className="tag-text" style={{ opacity: 0.7 }}>
+          {String(items.slice(0, 5).length).padStart(2, "0")} pieces
+        </span>
+      </div>
       <div
         className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-[0.6vw]"
         style={{ perspective: "1560px" }}
@@ -234,19 +291,62 @@ export default function ServiceSection({
           <ImageTile
             key={`${item.title}-${idx}`}
             item={item}
+            aspect={item.aspect ?? "3/4"}
             hiddenOn={idx === 4 ? "below-sm" : undefined}
           />
         ))}
       </div>
-    </section>
+    </div>
+  );
+}
+
+function LandscapeRow({ items }: { items: WorkItem[] }) {
+  return (
+    <div
+      className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-[0.6vw]"
+      style={{ perspective: "1560px" }}
+    >
+      {items.slice(0, 6).map((item, idx) => (
+        <ImageTile
+          key={`${item.title}-${idx}`}
+          item={item}
+          aspect={item.aspect ?? "16/9"}
+        />
+      ))}
+    </div>
+  );
+}
+
+function BentoGrid({ items }: { items: WorkItem[] }) {
+  return (
+    <div
+      className="grid grid-cols-2 sm:grid-cols-6 lg:grid-cols-12 gap-[0.6vw] auto-rows-min"
+      style={{ perspective: "1560px" }}
+    >
+      {items.map((item, idx) => {
+        const span = item.span ?? 6;
+        return (
+          <div
+            key={`${item.title}-${idx}`}
+            style={{
+              gridColumn: `span ${Math.min(Math.max(span, 1), 12)} / span ${Math.min(Math.max(span, 1), 12)}`,
+            }}
+          >
+            <ImageTile item={item} aspect={item.aspect ?? "16/9"} />
+          </div>
+        );
+      })}
+    </div>
   );
 }
 
 function ImageTile({
   item,
+  aspect,
   hiddenOn,
 }: {
   item: WorkItem;
+  aspect: string;
   hiddenOn?: "below-sm";
 }) {
   const accent = item.accent ?? "#ffbc95";
@@ -256,40 +356,33 @@ function ImageTile({
   return (
     <figure
       data-tile
-      className={`${visibilityClass} group cursor-pointer opacity-0 will-change-transform`}
-      style={{
-        transform: "translateY(36px)",
-      }}
+      className={`${visibilityClass} group cursor-pointer will-change-transform`}
     >
       <div
         className="relative rounded-[6px] overflow-hidden"
         style={{
           backgroundColor: accent,
-          aspectRatio: "3 / 4",
+          aspectRatio: aspect.replace("/", " / "),
         }}
       >
         {item.image ? (
           <div
-            data-tile-img
-            className="absolute inset-0 will-change-transform"
+            className="absolute inset-0"
             style={{
               backgroundImage: `url("${item.image}")`,
               backgroundSize: "cover",
               backgroundPosition: "center",
-              transform: "scale(1.16) translateY(-5%)",
             }}
             aria-hidden
           />
         ) : (
           <div
-            data-tile-img
-            className="absolute inset-0 will-change-transform"
+            className="absolute inset-0"
             style={{
               background: `linear-gradient(155deg, ${accent} 0%, ${shade(
                 accent,
                 -32
               )} 100%)`,
-              transform: "scale(1.16) translateY(-5%)",
             }}
             aria-hidden
           />

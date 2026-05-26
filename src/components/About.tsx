@@ -7,10 +7,7 @@ import { SITE_NAME } from "@/config/site";
 
 gsap.registerPlugin(ScrollTrigger);
 
-// PLACEHOLDER IMAGE — replace with portrait of Louie or studio shot
-// Swap ABOUT_IMAGE to "/about.jpg" once the real asset is dropped at /public/about.jpg
-const ABOUT_IMAGE =
-  "https://images.unsplash.com/photo-1485827404703-89b55fcc595e?auto=format&fit=crop&w=1000&h=1250&q=85";
+const ABOUT_IMAGE = "/about.png";
 
 export default function About() {
   const ref = useRef<HTMLElement>(null);
@@ -45,7 +42,6 @@ export default function About() {
       gsap.set(tags, { opacity: 0, y: 12 });
       gsap.set(paras, { opacity: 0, y: 24 });
       if (imgWrap) gsap.set(imgWrap, { opacity: 0, y: 36 });
-      if (img) gsap.set(img, { scale: 1.16, yPercent: -5 });
 
       const tl = gsap.timeline({
         scrollTrigger: { trigger: section, start: "top 75%", once: true },
@@ -63,13 +59,6 @@ export default function About() {
           imgWrap,
           { opacity: 1, y: 0, duration: 1, ease: "expo.out" },
           "-=0.3"
-        );
-      }
-      if (img) {
-        tl.to(
-          img,
-          { scale: 1, yPercent: 0, duration: 1.4, ease: "expo.out" },
-          "<"
         );
       }
       tl.to(
@@ -95,26 +84,14 @@ export default function About() {
         "-=0.5"
       );
 
-      if (img) {
-        gsap.to(img, {
-          yPercent: 8,
-          ease: "none",
-          scrollTrigger: {
-            trigger: section,
-            start: "top bottom",
-            end: "bottom top",
-            scrub: true,
-          },
-        });
-      }
     }, ref);
 
     return () => ctx.revert();
   }, []);
 
-  const linePre = `${SITE_NAME} is the studio of`;
-  const lineHi = "Louie Hartley,";
-  const linePost = "multidisciplinary designer.";
+  const linePre = "The Studio of";
+  const lineHi = "Louie H.";
+  const linePost = "Multidisciplinary Designer & Creative.";
 
   const renderWords = (text: string, keyPrefix: string, color?: string) => {
     const ws = text.split(" ").filter(Boolean);
@@ -170,7 +147,7 @@ export default function About() {
           className="tag-text text-right opacity-0"
           style={{ color: "var(--grey)" }}
         >
-          Louie Hartley &middot; Isle of Man
+          Louie H. &middot; Isle of Man
         </span>
       </div>
 
@@ -179,11 +156,10 @@ export default function About() {
           data-about-img-wrap
           className="lg:col-span-5 will-change-transform"
         >
-          {/* PLACEHOLDER IMAGE — swap ABOUT_IMAGE at top of About.tsx */}
           <div
             className="relative rounded-[6px] overflow-hidden"
             style={{
-              aspectRatio: "4 / 5",
+              aspectRatio: "1 / 1",
               backgroundColor: "#1a1310",
             }}
           >
@@ -195,7 +171,6 @@ export default function About() {
                 backgroundImage: `url("${ABOUT_IMAGE}")`,
                 backgroundSize: "cover",
                 backgroundPosition: "center",
-                transform: "scale(1.16) translateY(-5%)",
               }}
             />
             <div
@@ -212,7 +187,7 @@ export default function About() {
                   className="font-display font-semibold text-[0.78rem]"
                   style={{ color: "var(--peach)" }}
                 >
-                  Louie Hartley
+                  Louie H.
                 </div>
                 <div
                   className="font-display"

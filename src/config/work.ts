@@ -2,42 +2,185 @@ export type WorkItem = {
   title: string;
   category: string;
   image?: string;
+  /** Optional list of images. The flipping bento cycles through these. */
+  images?: string[];
+  /** If set, the tile is rendered as a link (e.g. opens a deck PDF). */
+  href?: string;
   accent?: string;
+  /** Tile aspect ratio override. Defaults to the section's aspect. */
+  aspect?: string;
+  /** Bento column span (1–6). Used only by "bento" layout. */
+  span?: number;
 };
 
-// PLACEHOLDER IMAGES — replace with real project imagery.
-// Format: drop /public/work/quickswap-1.jpg etc, then update `image` to "/work/quickswap-1.jpg".
 const u = (id: string, w = 900, q = 80) =>
   `https://images.unsplash.com/photo-${id}?auto=format&fit=crop&w=${w}&q=${q}`;
 
 export const WORK_ITEMS: Record<string, WorkItem[]> = {
-  brand: [
-    { title: "QuickSwap", category: "Brand & Identity", image: u("1517292987719-0369a794ec0f"), accent: "#f5b89a" },
-    { title: "StratEx", category: "Brand System", image: u("1542435503-956c469947f6"), accent: "#e8825a" },
-    { title: "LitVM", category: "Visual Identity", image: u("1455390582262-044cdead277a"), accent: "#d99b75" },
-    { title: "MatterFi", category: "Logo & Guidelines", image: u("1551845041-63e8e76836ea"), accent: "#c87a4a" },
-    { title: "KalqiX", category: "Brand & Identity", image: u("1626785774573-4b799315345d"), accent: "#a35a32" },
-  ],
+  // Bento mix of 16:9 landscape social cards and 1:1 squares. Spans sum to 12
+  // per row. Each tile cycles through its `images` array during the pinned
+  // flip animation, so every PNG in /public/work/social/ ends up on screen.
   content: [
-    { title: "QuickSwap", category: "Social System", image: u("1487014679447-9f8336841d58"), accent: "#f5b89a" },
-    { title: "SparkDEX", category: "Content Series", image: u("1493612276216-ee3925520721"), accent: "#e8825a" },
-    { title: "StratEx", category: "Graphics & Posts", image: u("1556761175-5973dc0f32e7"), accent: "#d99b75" },
-    { title: "MatterFi", category: "Reply / Meme", image: u("1518770660439-4636190af475"), accent: "#c87a4a" },
-    { title: "DataWing", category: "Written Content", image: u("1626197031507-c17099753214"), accent: "#a35a32" },
+    {
+      title: "Dogechain",
+      category: "Brand Campaign",
+      images: [
+        "/work/social/dogechain-gas-can.png",
+        "/work/social/dogechain-memes-need-rails-too.png",
+        "/work/social/dogechain-gas-station-meme.png",
+        "/work/social/fortune-cookie.png",
+      ],
+      accent: "#f5b89a",
+      aspect: "16/9",
+      span: 8,
+    },
+    {
+      title: "KalqiX",
+      category: "Meme / Reply",
+      images: [
+        "/work/social/kalqix-saruman-meme.png",
+        "/work/social/menu.png",
+      ],
+      accent: "#e8825a",
+      aspect: "1/1",
+      span: 4,
+    },
+    {
+      title: "Lester Labs",
+      category: "Partnership",
+      images: [
+        "/work/social/lester-labs-x-onmifun-partnership.png",
+        "/work/social/kalqix-the-best-of-both-worlds.png",
+      ],
+      accent: "#d99b75",
+      aspect: "16/9",
+      span: 6,
+    },
+    {
+      title: "StratEx",
+      category: "Brand Launch",
+      images: [
+        "/work/social/stratex-introducing-stratex.png",
+        "/work/social/stratex-third-generation-stablecoins.png",
+      ],
+      accent: "#c87a4a",
+      aspect: "16/9",
+      span: 6,
+    },
+    {
+      title: "American Fortress",
+      category: "Speaking Event",
+      images: [
+        "/work/social/house-of-ai-mehow-speaking-event.png",
+        "/work/social/the-capital-summit-mehow-speaking-event.png",
+      ],
+      accent: "#a35a32",
+      aspect: "16/9",
+      span: 8,
+    },
+    {
+      title: "StratEx",
+      category: "Launch / Announcement",
+      images: [
+        "/work/social/stratex-polygon-launch-finalized.png",
+        "/work/social/stratex-calling-all-builders-finalized.png",
+        "/work/social/what-is-stratex-finalized.png",
+      ],
+      accent: "#f5b89a",
+      aspect: "1/1",
+      span: 4,
+    },
+    {
+      title: "KalqiX",
+      category: "Marketing Card",
+      images: [
+        "/work/social/kalqix-cheque.png",
+        "/work/social/kalqix-pr-image-mainnet.png",
+        "/work/social/kalqix-launch-your-own-exchange-v2.png",
+        "/work/social/kalqix-trading-infra.png",
+        "/work/social/kalqix-what-defi-is-missing.png",
+      ],
+      accent: "#e8825a",
+      aspect: "16/9",
+      span: 6,
+    },
+    {
+      title: "LitVM",
+      category: "Community Space",
+      images: [
+        "/work/social/spaces.png",
+        "/work/social/kalqix-0-3-eth-swap-meme.png",
+      ],
+      accent: "#d99b75",
+      aspect: "16/9",
+      span: 6,
+    },
+    {
+      title: "BNB Chain",
+      category: "Brand Campaign",
+      images: [
+        "/work/social/bnb-what-is-liquid-staking.png",
+        "/work/social/stkbnb-alpaca-finance.png",
+        "/work/social/stkbnb-current-progress-milestones.png",
+      ],
+      accent: "#c87a4a",
+      aspect: "16/9",
+      span: 8,
+    },
+    {
+      title: "KalqiX",
+      category: "Static Ad",
+      images: ["/work/social/kalqix-kalqix-trade-ad-static.png"],
+      accent: "#a35a32",
+      aspect: "1/1",
+      span: 4,
+    },
+    {
+      title: "LDA × Cyber Arena",
+      category: "Editorial / Content",
+      images: [
+        "/work/social/lda-powerhouse-the-blockopedia-new-4.png",
+        "/work/social/cyber-arena-pitch-deck-5.png",
+      ],
+      accent: "#f5b89a",
+      aspect: "16/9",
+      span: 6,
+    },
+    {
+      title: "Press & PR",
+      category: "Media / Podcast",
+      images: [
+        "/work/social/press-release-header.png",
+        "/work/social/the-aggregated-100th-episode-pr-3.png",
+      ],
+      accent: "#e8825a",
+      aspect: "16/9",
+      span: 6,
+    },
   ],
+  // 16:9 landscape — live hero captures of shipped sites. Each card opens
+  // the live site in a new tab. Rendered in a uniform 3-col grid.
   web: [
-    { title: "American Fortress", category: "Website Design", image: u("1497366216548-37526070297c"), accent: "#f5b89a" },
-    { title: "StratEx", category: "Landing Page", image: u("1611162617474-5b21e879e113"), accent: "#e8825a" },
-    { title: "QuickSwap", category: "Product UI", image: u("1469022563428-aa04fef9f5a2"), accent: "#d99b75" },
-    { title: "SparkDEX", category: "Website Design", image: u("1467810563316-b5476525c0f9"), accent: "#c87a4a" },
-    { title: "DataWing", category: "Web + Product", image: u("1485827404703-89b55fcc595e"), accent: "#a35a32" },
+    { title: "Velocity Forge", category: "Website Design", image: "/work/web/velocity-forge.png", href: "https://www.velocityforge.co/", accent: "#f5b89a" },
+    { title: "LitVM", category: "Website Design", image: "/work/web/litvm.png", href: "https://www.litvm.com/", accent: "#e8825a" },
+    { title: "American Fortress", category: "Website Design", image: "/work/web/american-fortress.png", href: "https://www.americanfortress.io", accent: "#d99b75" },
+    { title: "ISSA", category: "Product / Command Centre", image: "/work/web/issa-command-centre.png", href: "https://issa-command-centre.vercel.app/", accent: "#c87a4a" },
+    { title: "LitVM Testnet", category: "Product / dApp", image: "/work/web/litvm-testnet.png", href: "https://testnet.litvm.com/", accent: "#a35a32" },
+    { title: "Lester Labs", category: "Web + Product", image: "/work/web/lester-labs.png", href: "https://www.lester-labs.com/", accent: "#f5b89a" },
+    { title: "Cardinal Painting", category: "Website Design", image: "/work/web/cardinal-painting.png", href: "https://cardinal-painting.vercel.app/", accent: "#e8825a" },
   ],
+  // 16:9 pitch deck covers — rendered as a horizontal pinned carousel.
+  // Each card opens the matching PDF deck in a new tab.
   video: [
-    { title: "LitVM", category: "Explainer Video", image: u("1490481651871-ab68de25d43d"), accent: "#f5b89a" },
-    { title: "MatterFi", category: "Announcement", image: u("1432888622747-4eb9a8efeb07"), accent: "#e8825a" },
-    { title: "SparkDEX", category: "Product Video", image: u("1611348586804-61bf6c080437"), accent: "#d99b75" },
-    { title: "KalqiX", category: "Pitch Deck", image: u("1626785774573-4b799315345d"), accent: "#c87a4a" },
-    { title: "American Fortress", category: "Proposal", image: u("1497366216548-37526070297c"), accent: "#a35a32" },
+    { title: "StratEx", category: "Pitch Deck", image: "/work/stratex-pitch-deck.png", href: "/work/decks/stratex-pitch-deck.pdf", accent: "#f5b89a" },
+    { title: "LitVM", category: "Pitch Deck", image: "/work/litvm-pitch-deck.png", href: "/work/decks/litvm-pitch-deck.pdf", accent: "#e8825a" },
+    { title: "KalqiX", category: "Pitch Deck", image: "/work/kalqix-pitch-deck.png", href: "/work/decks/kalqix-pitch-deck.pdf", accent: "#d99b75" },
+    { title: "MatterFi", category: "Pitch Deck", image: "/work/matterfi-pitch-deck.png", href: "/work/decks/matterfi-pitch-deck.pdf", accent: "#c87a4a" },
+    { title: "DataWing", category: "Pitch Deck", image: "/work/datawing-pitch-deck.png", href: "/work/decks/datawing-pitch-deck.pdf", accent: "#a35a32" },
+    { title: "LDA", category: "Pitch Deck", image: "/work/lda-pitch-deck.png", href: "/work/decks/lda-pitch-deck.pdf", accent: "#f5b89a" },
+    { title: "Base × Tesseract", category: "Pitch Deck", image: "/work/lda-base-tesseract-pitch-deck.png", href: "/work/decks/lda-base-tesseract-pitch-deck.pdf", accent: "#e8825a" },
+    { title: "StratEx × Flare", category: "Proposal", image: "/work/stratex-flare-proposal.png", href: "/work/decks/stratex-flare-proposal.pdf", accent: "#d99b75" },
+    { title: "QuickSwap", category: "Growth Packages", image: "/work/quickswap-marketing-growth-packages.png", href: "/work/decks/quickswap-marketing-growth-packages.pdf", accent: "#c87a4a" },
   ],
 };
 
@@ -64,31 +207,67 @@ export const WHY_POINTS = [
   "One studio for everything: brand, web, content, and video.",
 ];
 
-export const REVIEWS = [
+export type Review = {
+  quote: string;
+  author: string;
+  company: string;
+  rating: number;
+};
+
+export const REVIEWS: Review[] = [
   {
-    quote: "[Sample testimonial, to be replaced]",
-    author: "Client Name",
-    company: "Company",
+    quote:
+      "Louie has been doing an excellent job with our social media creatives. His graphics and videos are consistently high quality, visually engaging, and aligned with our brand identity. He is responsive to feedback, quick with revisions, and always brings creative ideas that elevate our content. A reliable designer who delivers great work and is a pleasure to collaborate with.",
+    author: "Prateek",
+    company: "CMO, KalqiX",
+    rating: 5,
   },
   {
-    quote: "[Sample testimonial, to be replaced]",
-    author: "Client Name",
-    company: "Company",
+    quote:
+      "Louie has built multiple websites for us to a high standard, delivered quality work and met tight deadlines. His work always reflects our brand standards across multiple clients, and he utilises a strong sense of direction and creative skill to take simple concepts into finalised published assets.",
+    author: "Jack",
+    company: "CLO, Lunar Digital Assets",
+    rating: 5,
   },
   {
-    quote: "[Sample testimonial, to be replaced]",
-    author: "Client Name",
-    company: "Company",
+    quote:
+      "I've worked with Louie across multiple projects, building AI command centres for client facing agent systems. His work is always exemplary, delivered on time and to a high standard. His creative expertise helps us craft engaging front ends, and always wow's the clients.",
+    author: "Mau",
+    company: "Founder, MauPan Studios",
+    rating: 5,
   },
 ];
 
-export const SERVICE_SECTIONS = [
+export type ServiceLayout =
+  | "portrait-row"
+  | "bento"
+  | "landscape-row"
+  | "carousel"
+  | "web-showcase";
+
+export type ServiceSectionConfig = {
+  id: string;
+  number: string;
+  title: string;
+  line: string;
+  includes: readonly string[];
+  layout: ServiceLayout;
+};
+
+export const SERVICE_SECTIONS: readonly ServiceSectionConfig[] = [
   {
-    id: "brand",
+    id: "web",
     number: "01",
-    title: "Brand & Identity",
-    line: "Distinctive visual identities, logos, and brand systems that make you unmistakable.",
-    includes: ["Branding", "Visual identity", "Brand systems", "Guidelines"],
+    title: "Websites built to convert.",
+    line: "Premium websites and interfaces, shipped fast. From landing pages that close leads to full product UIs people sign up on.",
+    includes: [
+      "Website design",
+      "UI / UX",
+      "Landing pages",
+      "Product design",
+      "Webflow / Next.js",
+    ],
+    layout: "web-showcase",
   },
   {
     id: "content",
@@ -101,25 +280,20 @@ export const SERVICE_SECTIONS = [
       "Written content",
       "Meme / reply content",
     ],
-  },
-  {
-    id: "web",
-    number: "03",
-    title: "Web & Product",
-    line: "High-end websites and interfaces built to look incredible and convert.",
-    includes: ["Website design", "UI/UX", "Landing pages", "Product design"],
+    layout: "bento",
   },
   {
     id: "video",
-    number: "04",
-    title: "Video & Decks",
-    line: "Explainer videos, announcements, pitch decks and proposals that land.",
+    number: "03",
+    title: "Pitch Decks & Presentations",
+    line: "Pitch decks, proposals, and one-pagers that land with investors and partners.",
     includes: [
-      "Explainer video",
-      "Product video",
-      "Announcement video",
       "Pitch decks",
       "Proposals",
+      "One-pagers",
+      "Investor materials",
+      "Partner decks",
     ],
+    layout: "carousel",
   },
 ] as const;

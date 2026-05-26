@@ -3,7 +3,7 @@ export const SITE_NAME = "Ludio";
 export const SITE_TAGLINE = "Creative Studio";
 
 export const SITE_DESCRIPTION =
-  "Ludio is a creative studio building brand, web, content & video for modern businesses. AI-native, multidisciplinary, made by Louie Hartley.";
+  "Ludio is a creative studio building brand, web, content & video for modern businesses. AI-native, multidisciplinary, made by Louie H.";
 
 export const CONTACT_EMAIL = "louhonmia@gmail.com";
 

@@ -3,6 +3,7 @@
 import { useEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { Star } from "lucide-react";
 import { REVIEWS } from "@/config/work";
 
 gsap.registerPlugin(ScrollTrigger);
@@ -108,7 +109,7 @@ export default function Reviews() {
           className="tag-text text-right opacity-0"
           style={{ color: "var(--grey)" }}
         >
-          [Sample, replace with real client testimonials]
+          {REVIEWS.length} reviews &middot; 5.0 average
         </span>
       </div>
 
@@ -153,28 +154,30 @@ export default function Reviews() {
               color: i === 1 ? "var(--bg-warm)" : "var(--ink)",
             }}
           >
-            <svg
-              width="28"
-              height="28"
-              viewBox="0 0 32 32"
-              fill="none"
-              aria-hidden
+            <div
+              className="flex items-center gap-1"
+              aria-label={`${r.rating} out of 5 stars`}
               style={{ color: "var(--coral)" }}
             >
-              <path
-                d="M11 22C7 22 4 19 4 15c0-5 4-9 9-10v3c-3 1-5 4-5 7h3v7H11zm14 0c-4 0-7-3-7-7 0-5 4-9 9-10v3c-3 1-5 4-5 7h3v7h0z"
-                fill="currentColor"
-              />
-            </svg>
+              {Array.from({ length: 5 }).map((_, s) => (
+                <Star
+                  key={s}
+                  size={16}
+                  strokeWidth={0}
+                  fill={s < r.rating ? "currentColor" : "transparent"}
+                  stroke="currentColor"
+                />
+              ))}
+            </div>
 
             <p
-              className="font-display font-medium leading-[1.15]"
+              className="font-display font-medium leading-[1.25]"
               style={{
-                fontSize: "clamp(1.1rem, 1.5vw, 1.6rem)",
+                fontSize: "clamp(1rem, 1.25vw, 1.35rem)",
                 letterSpacing: "-0.01em",
               }}
             >
-              {r.quote}
+              &ldquo;{r.quote}&rdquo;
             </p>
 
             <div className="mt-auto">
