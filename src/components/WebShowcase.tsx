@@ -114,10 +114,10 @@ export default function WebShowcase({
       id={id}
       className="relative w-full bg-bg-warm"
       style={{
-        paddingTop: "5vw",
-        paddingBottom: "5vw",
-        paddingLeft: "4vw",
-        paddingRight: "4vw",
+        paddingTop: "var(--section-py-md)",
+        paddingBottom: "var(--section-py-md)",
+        paddingLeft: "var(--gutter-x)",
+        paddingRight: "var(--gutter-x)",
       }}
     >
       <div className="flex items-start justify-between mb-[2.5vw]">

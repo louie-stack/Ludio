@@ -15,10 +15,3 @@ export const NAV_LINKS = [
   { label: "About", href: "#about" },
   { label: "Contact", href: "#contact" },
 ] as const;
-
-export const SOCIALS: { label: string; href: string }[] = [
-  { label: "Instagram", href: "#" },
-  { label: "X", href: "#" },
-  { label: "LinkedIn", href: "#" },
-  { label: "Read.cv", href: "#" },
-];

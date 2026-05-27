@@ -169,10 +169,10 @@ export default function ContentBento({
       id={id}
       className="relative w-full bg-bg-warm"
       style={{
-        paddingTop: "5vw",
-        paddingBottom: "5vw",
-        paddingLeft: "4vw",
-        paddingRight: "4vw",
+        paddingTop: "var(--section-py-md)",
+        paddingBottom: "var(--section-py-md)",
+        paddingLeft: "var(--gutter-x)",
+        paddingRight: "var(--gutter-x)",
       }}
     >
       <div className="flex items-start justify-between mb-[2.5vw]">
@@ -253,17 +253,25 @@ export default function ContentBento({
 
       <div
         ref={gridRef}
-        className="grid grid-cols-2 sm:grid-cols-6 lg:grid-cols-12 gap-[0.6vw] auto-rows-min"
+        className="grid grid-cols-2 sm:grid-cols-6 lg:grid-cols-12 gap-[clamp(0.5rem,0.6vw,0.9rem)] auto-rows-min"
         style={{ perspective: "1600px" }}
       >
         {items.map((item, idx) => {
-          const span = item.span ?? 6;
+          // Desktop uses 12-col spans (8/6/4). Tablet halves those (4/3/2)
+          // against a 6-col grid. Mobile is a clean 2-col with every tile
+          // taking 1 col so the rhythm doesn't collapse to a vertical stack.
+          const lg = Math.min(Math.max(item.span ?? 6, 1), 12);
+          const sm = Math.min(Math.max(Math.round(lg / 2), 1), 6);
           return (
             <div
               key={`${item.title}-${idx}`}
-              style={{
-                gridColumn: `span ${Math.min(Math.max(span, 1), 12)} / span ${Math.min(Math.max(span, 1), 12)}`,
-              }}
+              className="bento-cell"
+              style={
+                {
+                  ["--sm-span" as string]: sm,
+                  ["--lg-span" as string]: lg,
+                } as React.CSSProperties
+              }
             >
               <FlipTile item={item} />
             </div>

@@ -143,7 +143,13 @@ const PrismaHero = () => {
         <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-black/30 via-transparent to-black/60" />
 
         {/* Hero content */}
-        <div className="absolute bottom-0 left-0 right-0 px-4 pb-2 sm:px-6 md:px-10">
+        <div
+          className="absolute bottom-0 left-0 right-0 pb-2"
+          style={{
+            paddingLeft: "var(--gutter-x)",
+            paddingRight: "var(--gutter-x)",
+          }}
+        >
           <div className="grid grid-cols-12 items-end gap-4">
             <div className="col-span-12 lg:col-span-8">
               <h1
@@ -154,13 +160,13 @@ const PrismaHero = () => {
               </h1>
             </div>
 
-            <div className="col-span-12 flex flex-col gap-5 pb-6 lg:col-span-4 lg:pb-10">
+            <div className="col-span-12 flex flex-col gap-4 sm:gap-5 pb-8 sm:pb-6 lg:col-span-4 lg:pb-10">
               <motion.p
                 initial={{ y: 20, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
                 transition={{ duration: 0.8, delay: 0.5, ease: [0.16, 1, 0.3, 1] }}
-                className="text-xs sm:text-sm md:text-base"
-                style={{ color: "rgba(225, 224, 204, 0.7)", lineHeight: 1.2 }}
+                className="text-[0.82rem] sm:text-sm md:text-base"
+                style={{ color: "rgba(225, 224, 204, 0.78)", lineHeight: 1.35 }}
               >
                 Ludio is a multidisciplinary creative studio building brand, web,
                 content and video for modern businesses. AI-native, premium craft,
@@ -177,7 +183,7 @@ const PrismaHero = () => {
               >
                 Start a project
                 <span
-                  className="flex h-9 w-9 items-center justify-center rounded-full transition-transform group-hover:scale-110 sm:h-10 sm:w-10"
+                  className="flex h-10 w-10 items-center justify-center rounded-full transition-transform group-hover:scale-110 sm:h-10 sm:w-10"
                   style={{ backgroundColor: "#000" }}
                 >
                   <ArrowRight className="h-4 w-4" style={{ color: CREAM }} />

@@ -122,7 +122,7 @@ export default function Contact() {
       ref={ref}
       id="contact"
       className="relative w-full bg-bg-warm"
-      style={{ paddingLeft: "4vw", paddingRight: "4vw", paddingTop: "5vw" }}
+      style={{ paddingLeft: "var(--gutter-x)", paddingRight: "var(--gutter-x)", paddingTop: "var(--section-py-md)" }}
     >
       <div className="flex items-start justify-between mb-[1vw]">
         <div data-tag className="flex items-center gap-3 opacity-0">

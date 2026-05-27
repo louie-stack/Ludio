@@ -83,10 +83,10 @@ export default function Reviews() {
       ref={ref}
       className="relative w-full bg-bg-warm"
       style={{
-        paddingTop: "5vw",
-        paddingBottom: "5vw",
-        paddingLeft: "4vw",
-        paddingRight: "4vw",
+        paddingTop: "var(--section-py-md)",
+        paddingBottom: "var(--section-py-md)",
+        paddingLeft: "var(--gutter-x)",
+        paddingRight: "var(--gutter-x)",
       }}
     >
       <div className="flex items-start justify-between mb-[1vw]">
@@ -109,7 +109,7 @@ export default function Reviews() {
           className="tag-text text-right opacity-0"
           style={{ color: "var(--grey)" }}
         >
-          {REVIEWS.length} reviews &middot; 5.0 average
+          {`${REVIEWS.length} reviews · 5.0 average`}
         </span>
       </div>
 
@@ -144,7 +144,7 @@ export default function Reviews() {
             data-review-card
             className="relative rounded-[12px] flex flex-col gap-8 opacity-0"
             style={{
-              padding: "2.4vw 2vw",
+              padding: "clamp(1.5rem, 2.4vw, 3rem) clamp(1.25rem, 2vw, 2.5rem)",
               backgroundColor:
                 i === 1 ? "var(--ink)" : "rgba(255,255,255,0.5)",
               border:

@@ -85,10 +85,10 @@ export default function WhySection() {
       ref={ref}
       className="relative w-full bg-bg-warm"
       style={{
-        paddingTop: "5vw",
-        paddingBottom: "5vw",
-        paddingLeft: "4vw",
-        paddingRight: "4vw",
+        paddingTop: "var(--section-py-md)",
+        paddingBottom: "var(--section-py-md)",
+        paddingLeft: "var(--gutter-x)",
+        paddingRight: "var(--gutter-x)",
       }}
     >
       <div className="flex items-start justify-between mb-[1vw]">
@@ -160,19 +160,21 @@ export default function WhySection() {
           <li
             key={p}
             data-why-item
-            className="flex items-start gap-6 py-[1.6vw] opacity-0"
+            className="flex items-start gap-3 sm:gap-6 opacity-0"
             style={{
               borderTop: i === 0 ? "1px solid rgba(49,49,49,0.12)" : undefined,
               borderBottom: "1px solid rgba(49,49,49,0.12)",
+              paddingTop: "clamp(1rem, 1.6vw, 2rem)",
+              paddingBottom: "clamp(1rem, 1.6vw, 2rem)",
             }}
           >
             <span
               className="tag-text flex-shrink-0 tabular-nums pt-1"
-              style={{ color: "var(--grey)", minWidth: "2.5rem" }}
+              style={{ color: "var(--grey)", minWidth: "1.75rem" }}
             >
               0{i + 1}
             </span>
-            <div className="flex-1 flex items-start gap-4">
+            <div className="flex-1 flex items-start gap-3 sm:gap-4">
               <span
                 aria-hidden
                 className="flex-shrink-0 mt-1"

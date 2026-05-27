@@ -100,13 +100,13 @@ export default function StatementBeat({
       ref={ref}
       id={id}
       className={`relative w-full bg-bg-warm`}
-      style={{ paddingTop: "7vw", paddingBottom: "7vw" }}
+      style={{ paddingTop: "var(--section-py-lg)", paddingBottom: "var(--section-py-lg)" }}
     >
       <div
         className={`mx-auto ${
           align === "right" ? "text-right" : "text-left"
         }`}
-        style={{ paddingLeft: "4vw", paddingRight: "4vw", maxWidth: "100%" }}
+        style={{ paddingLeft: "var(--gutter-x)", paddingRight: "var(--gutter-x)", maxWidth: "100%" }}
       >
         {eyebrow && (
           <div

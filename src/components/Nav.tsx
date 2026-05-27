@@ -26,7 +26,7 @@ export default function Nav() {
       className="fixed top-0 left-0 right-0 z-50 transition-colors duration-500"
       style={{
         color: onHeroDark ? "var(--peach)" : "var(--ink)",
-        padding: "1.6vw 4vw",
+        padding: "clamp(0.85rem, 1.6vw, 1.6rem) var(--gutter-x)",
       }}
     >
       <div className="flex items-center justify-between gap-6">
@@ -45,19 +45,19 @@ export default function Nav() {
             }}
           />
           <span
-            className="font-display font-semibold text-[1.1rem] leading-none tracking-tight"
+            className="font-display font-semibold text-[1.05rem] sm:text-[1.1rem] leading-none tracking-tight"
           >
             {SITE_NAME}
-            <span className="opacity-50">.studio</span>
+            <span className="opacity-50 hidden sm:inline">.studio</span>
           </span>
         </a>
 
-        <ul className="flex items-center gap-6 sm:gap-8">
+        <ul className="flex items-center gap-4 sm:gap-8">
           {NAV_LINKS.filter((l) => l.href !== "#hero").map((l) => (
             <li key={l.href}>
               <a
                 href={l.href}
-                className="font-display font-semibold text-[0.95rem] leading-none hover:opacity-60 transition-opacity"
+                className="font-display font-semibold text-[0.9rem] sm:text-[0.95rem] leading-none hover:opacity-60 transition-opacity"
               >
                 {l.label}
               </a>

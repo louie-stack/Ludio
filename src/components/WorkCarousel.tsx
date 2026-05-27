@@ -70,11 +70,13 @@ export default function WorkCarousel({
         );
       }
 
-      // Horizontal pinned scroll. Pin the WHOLE section so the title stays
-      // visible alongside the carousel; translate the inner track left as the
-      // user scrolls vertically.
+      // Horizontal pinned scroll on desktop only. Pinning + scrolljack on a
+      // phone makes the section feel broken, so on small viewports we leave
+      // the inner track to scroll natively (overflow-x: auto via CSS).
+      const isDesktop = window.matchMedia("(min-width: 768px)").matches;
       let tween: gsap.core.Tween | null = null;
       const setUp = () => {
+        if (!isDesktop) return null;
         const trackWidth = track.scrollWidth;
         const viewWidth = trackWrap.clientWidth;
         const distance = Math.max(0, trackWidth - viewWidth);
@@ -120,20 +122,16 @@ export default function WorkCarousel({
     <section
       ref={sectionRef}
       id={id}
-      className="relative w-full bg-bg-warm overflow-hidden"
-      style={{
-        height: "100svh",
-        minHeight: "640px",
-      }}
+      className="relative w-full bg-bg-warm overflow-hidden md:[height:100svh] md:[min-height:640px]"
     >
-      <div className="absolute inset-0 flex flex-col">
+      <div className="md:absolute md:inset-0 flex flex-col">
         {/* Header — pinned with the section, sits above the carousel */}
         <div
           className="shrink-0"
           style={{
-            paddingTop: "3.5vw",
-            paddingLeft: "4vw",
-            paddingRight: "4vw",
+            paddingTop: "clamp(1.5rem, 3.5vw, 4rem)",
+            paddingLeft: "var(--gutter-x)",
+            paddingRight: "var(--gutter-x)",
           }}
         >
           <div className="flex items-start justify-between mb-[1.5vw]">
@@ -213,18 +211,20 @@ export default function WorkCarousel({
           </div>
         </div>
 
-        {/* Carousel viewport — takes the rest of the section's height */}
+        {/* Carousel viewport — takes the rest of the section's height on
+            desktop; scrolls horizontally with the finger on mobile. */}
         <div
           ref={trackWrapRef}
-          className="relative w-full flex-1 overflow-hidden"
+          className="relative w-full md:flex-1 md:overflow-hidden overflow-x-auto overflow-y-hidden mt-6 md:mt-0 pb-6 md:pb-0"
+          style={{ WebkitOverflowScrolling: "touch", scrollSnapType: "x mandatory" }}
         >
           <div
             ref={trackRef}
-            className="absolute inset-y-0 left-0 flex items-center will-change-transform"
+            className="md:absolute md:inset-y-0 md:left-0 flex md:items-center items-stretch will-change-transform"
             style={{
-              gap: "1.2vw",
-              paddingLeft: "4vw",
-              paddingRight: "10vw",
+              gap: "clamp(0.75rem, 1.2vw, 1.5rem)",
+              paddingLeft: "var(--gutter-x)",
+              paddingRight: "var(--gutter-x)",
               width: "max-content",
             }}
           >
@@ -256,19 +256,16 @@ function CarouselCard({ item, index }: { item: WorkItem; index: number }) {
   return (
     <Wrapper
       {...wrapperProps}
-      className={`group flex-shrink-0 flex flex-col will-change-transform ${
+      className={`group flex-shrink-0 flex flex-col will-change-transform md:h-[62%] ${
         item.href ? "cursor-pointer" : ""
       }`}
-      style={{
-        height: "62%",
-      }}
+      style={{ scrollSnapAlign: "start" }}
     >
       <div
-        className="relative rounded-[10px] overflow-hidden shadow-[0_30px_60px_-30px_rgba(20,15,12,0.35)] transition-transform duration-500 group-hover:-translate-y-1"
+        className="relative rounded-[10px] overflow-hidden shadow-[0_30px_60px_-30px_rgba(20,15,12,0.35)] transition-transform duration-500 group-hover:-translate-y-1 w-[78vw] sm:w-[60vw] md:w-auto md:h-full"
         style={{
           backgroundColor: accent,
           aspectRatio: item.aspect ? item.aspect.replace("/", " / ") : "16 / 9",
-          height: "100%",
         }}
       >
         {item.image ? (

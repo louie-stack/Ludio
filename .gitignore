@@ -40,3 +40,6 @@ dev.log
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# local-only screenshots from mobile-screenshots scripts
+/screenshots/

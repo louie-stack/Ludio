@@ -82,10 +82,10 @@ export default function StudioStack() {
       ref={ref}
       className="relative w-full bg-bg-warm"
       style={{
-        paddingTop: "4vw",
-        paddingBottom: "4vw",
-        paddingLeft: "4vw",
-        paddingRight: "4vw",
+        paddingTop: "var(--section-py-sm)",
+        paddingBottom: "var(--section-py-sm)",
+        paddingLeft: "var(--gutter-x)",
+        paddingRight: "var(--gutter-x)",
         borderTop: "1px solid rgba(49,49,49,0.08)",
       }}
     >

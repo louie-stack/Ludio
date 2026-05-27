@@ -2,6 +2,7 @@ import { PrismaHero } from "@/components/ui/prisma-hero";
 import Stats from "@/components/Stats";
 import StatementBeat from "@/components/StatementBeat";
 import WebShowcase from "@/components/WebShowcase";
+import VideoShowcase from "@/components/VideoShowcase";
 import ContentBento from "@/components/ContentBento";
 import WorkCarousel from "@/components/WorkCarousel";
 import WhySection from "@/components/WhySection";
@@ -29,17 +30,9 @@ export default function Home() {
 
       <div id="work">
         <WebShowcase {...SERVICE_SECTIONS[0]} items={WORK_ITEMS.web} />
-
-        <StatementBeat
-          eyebrow="A working principle"
-          size="xl"
-          highlight="saves it"
-        >
-          Good design takes time. Working with Ludio saves it.
-        </StatementBeat>
-
-        <ContentBento {...SERVICE_SECTIONS[1]} items={WORK_ITEMS.content} />
-        <WorkCarousel {...SERVICE_SECTIONS[2]} items={WORK_ITEMS.video} />
+        <VideoShowcase {...SERVICE_SECTIONS[1]} items={WORK_ITEMS.videos} />
+        <ContentBento {...SERVICE_SECTIONS[2]} items={WORK_ITEMS.content} />
+        <WorkCarousel {...SERVICE_SECTIONS[3]} items={WORK_ITEMS.decks} />
       </div>
 
       <WhySection />

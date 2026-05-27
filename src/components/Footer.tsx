@@ -1,4 +1,4 @@
-import { SITE_NAME, SITE_YEAR, SOCIALS } from "@/config/site";
+import { SITE_NAME, SITE_YEAR } from "@/config/site";
 import CopyEmail from "@/components/CopyEmail";
 
 export default function Footer() {
@@ -7,10 +7,10 @@ export default function Footer() {
       className="relative w-full overflow-hidden"
       style={{
         backgroundColor: "var(--bg-warm)",
-        paddingTop: "4vw",
-        paddingBottom: "1.5vw",
-        paddingLeft: "4vw",
-        paddingRight: "4vw",
+        paddingTop: "var(--section-py-sm)",
+        paddingBottom: "clamp(1rem, 1.5vw, 2rem)",
+        paddingLeft: "var(--gutter-x)",
+        paddingRight: "var(--gutter-x)",
       }}
     >
       <div
@@ -83,24 +83,6 @@ export default function Footer() {
           </ul>
         </div>
 
-        <div className="lg:col-span-4">
-          <div className="tag-text mb-4" style={{ color: "var(--grey)" }}>
-            Elsewhere
-          </div>
-          <ul className="flex flex-col gap-2.5">
-            {SOCIALS.map((s) => (
-              <li key={s.label}>
-                <a
-                  href={s.href}
-                  className="font-display font-medium hover:opacity-60 transition-opacity"
-                  style={{ color: "var(--ink)" }}
-                >
-                  {s.label}
-                </a>
-              </li>
-            ))}
-          </ul>
-        </div>
       </div>
 
       <div

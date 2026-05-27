@@ -11,6 +11,10 @@ export type WorkItem = {
   aspect?: string;
   /** Bento column span (1–6). Used only by "bento" layout. */
   span?: number;
+  /** Path to local .mp4 (autoplays muted+looped in VideoShowcase). */
+  video?: string;
+  /** Optional poster image shown until the video frame is ready. */
+  poster?: string;
 };
 
 const u = (id: string, w = 900, q = 80) =>
@@ -169,9 +173,39 @@ export const WORK_ITEMS: Record<string, WorkItem[]> = {
     { title: "Lester Labs", category: "Web + Product", image: "/work/web/lester-labs.png", href: "https://www.lester-labs.com/", accent: "#f5b89a" },
     { title: "Cardinal Painting", category: "Website Design", image: "/work/web/cardinal-painting.png", href: "https://cardinal-painting.vercel.app/", accent: "#e8825a" },
   ],
+  // 16:9 video reels — local MP4s in /public/work/videos/. Rendered by
+  // VideoShowcase: a hero player on top, smaller thumbnails below; click a
+  // thumbnail to swap it into the hero spot. Replace the placeholder paths
+  // below with the real filenames as you drop them in.
+  videos: [
+    {
+      title: "0Gai × American Fortress",
+      category: "Partnership Announcement",
+      video: "/work/videos/0gai-americanfortress-partnership.mp4",
+      accent: "#f5b89a",
+    },
+    {
+      title: "KalqiX",
+      category: "Mainnet Stats Reel",
+      video: "/work/videos/kalqix-mainnet-stats.mp4",
+      accent: "#e8825a",
+    },
+    {
+      title: "KalqiX",
+      category: "Testnet Stats Reel",
+      video: "/work/videos/kalqix-testnet-stats.mp4",
+      accent: "#d99b75",
+    },
+    {
+      title: "Lester Labs",
+      category: "Launch Reel",
+      video: "/work/videos/lester-labs-launch.mp4",
+      accent: "#c87a4a",
+    },
+  ],
   // 16:9 pitch deck covers — rendered as a horizontal pinned carousel.
   // Each card opens the matching PDF deck in a new tab.
-  video: [
+  decks: [
     { title: "StratEx", category: "Pitch Deck", image: "/work/stratex-pitch-deck.png", href: "/work/decks/stratex-pitch-deck.pdf", accent: "#f5b89a" },
     { title: "LitVM", category: "Pitch Deck", image: "/work/litvm-pitch-deck.png", href: "/work/decks/litvm-pitch-deck.pdf", accent: "#e8825a" },
     { title: "KalqiX", category: "Pitch Deck", image: "/work/kalqix-pitch-deck.png", href: "/work/decks/kalqix-pitch-deck.pdf", accent: "#d99b75" },
@@ -192,6 +226,7 @@ export const STUDIO_STACK = [
   "Custom AI agents",
   "Remotion",
   "After Effects",
+  "Capcut",
 ];
 
 export const STATS = [
@@ -243,7 +278,8 @@ export type ServiceLayout =
   | "bento"
   | "landscape-row"
   | "carousel"
-  | "web-showcase";
+  | "web-showcase"
+  | "video-showcase";
 
 export type ServiceSectionConfig = {
   id: string;
@@ -270,8 +306,22 @@ export const SERVICE_SECTIONS: readonly ServiceSectionConfig[] = [
     layout: "web-showcase",
   },
   {
-    id: "content",
+    id: "videos",
     number: "02",
+    title: "Video & Motion",
+    line: "Brand films, product motion, and social cutdowns. Cinematic work that earns the scroll-stop.",
+    includes: [
+      "Brand films",
+      "Product motion",
+      "Explainers",
+      "Social cutdowns",
+      "After Effects / Remotion",
+    ],
+    layout: "video-showcase",
+  },
+  {
+    id: "content",
+    number: "03",
     title: "Social & Content",
     line: "Scroll-stopping social content, graphics, and written posts that build presence.",
     includes: [
@@ -283,8 +333,8 @@ export const SERVICE_SECTIONS: readonly ServiceSectionConfig[] = [
     layout: "bento",
   },
   {
-    id: "video",
-    number: "03",
+    id: "decks",
+    number: "04",
     title: "Pitch Decks & Presentations",
     line: "Pitch decks, proposals, and one-pagers that land with investors and partners.",
     includes: [
